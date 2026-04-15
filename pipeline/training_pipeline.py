@@ -1,12 +1,6 @@
 import os
 import sys
 import mlflow
-from prefect import flow
-
-# -------------------------
-# 🔥 MLFLOW CONFIG
-# -------------------------
-
 
 # -------------------------
 # 📦 IMPORT PATH FIX
@@ -18,21 +12,33 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 # -------------------------
 from src.preprocess import preprocess_data, get_preprocessor
 from src.train import train_model
-from src.model import get_model_pipeline   # make sure this file exists
+from src.model import get_model_pipeline
+
 
 # -------------------------
-# 🚀 PIPELINE
+# 🚀 TRAINING PIPELINE
 # -------------------------
-@flow(name="ML Training Pipeline")
 def training_pipeline():
 
     print("🚀 Starting training pipeline...")
 
+    # -------------------------
+    # 🔥 MLFLOW CONFIG
+    # -------------------------
     mlflow.set_tracking_uri("file:./mlruns")
     mlflow.set_experiment("medical_insurance_cost_prediction")
 
-    data_path = "data/raw.csv"
+    # -------------------------
+    # 📁 DATA PATH
+    # -------------------------
+    data_path = "data/insurance.csv"
 
+    if not os.path.exists(data_path):
+        raise FileNotFoundError(f"{data_path} not found")
+
+    # -------------------------
+    # 📥 LOAD DATA
+    # -------------------------
     X, y = preprocess_data(
         path=data_path,
         training=True,
@@ -41,10 +47,15 @@ def training_pipeline():
 
     print("📊 Data loaded and preprocessed")
 
+    # -------------------------
+    # 🧠 PREPROCESSOR + PIPELINE
+    # -------------------------
     preprocess = get_preprocessor(X)
-
     pipeline = get_model_pipeline(preprocess)
 
+    # -------------------------
+    # 🤖 TRAIN MODEL
+    # -------------------------
     try:
         trained_pipeline = train_model(pipeline, X, y)
         print("✅ Model training completed")
@@ -54,5 +65,9 @@ def training_pipeline():
 
     return trained_pipeline
 
+
+# -------------------------
+# ▶️ LOCAL RUN
+# -------------------------
 if __name__ == "__main__":
     training_pipeline()
