@@ -31,7 +31,7 @@ def training_pipeline():
     # -------------------------
     # 📁 DATA PATH
     # -------------------------
-    data_path = "data/insurance.csv"
+    data_path = "data/raw.csv"
 
     if not os.path.exists(data_path):
         raise FileNotFoundError(f"{data_path} not found")
