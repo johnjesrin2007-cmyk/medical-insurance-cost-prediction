@@ -4,6 +4,9 @@ from mlflow.tracking import MlflowClient
 from pydantic import BaseModel
 import pandas as pd
 
+# -------------------------
+# 🚀 FASTAPI INIT
+# -------------------------
 app = FastAPI(title="Medical Insurance Prediction API")
 
 
@@ -18,10 +21,16 @@ def load_latest_model():
             "medical_insurance_cost_prediction"
         )
 
+        if experiment is None:
+            raise Exception("Experiment not found")
+
         runs = client.search_runs(
             experiment_ids=[experiment.experiment_id],
             order_by=["start_time DESC"]
         )
+
+        if not runs:
+            raise Exception("No runs found. Train model first.")
 
         latest_run_id = runs[0].info.run_id
 
@@ -36,6 +45,7 @@ def load_latest_model():
         return None
 
 
+# Load model at startup
 model = load_latest_model()
 
 
@@ -56,7 +66,9 @@ class InputData(BaseModel):
 # -------------------------
 @app.get("/")
 def home():
-    return {"message": "MLflow-based API is running"}
+    return {
+        "message": "Medical Insurance Prediction API is running"
+    }
 
 
 # -------------------------
@@ -68,7 +80,7 @@ def predict(data: InputData):
     global model
 
     if model is None:
-        return {"error": "Model not loaded"}
+        return {"error": "Model not loaded. Check training logs."}
 
     try:
         input_dict = data.dict()
@@ -76,8 +88,8 @@ def predict(data: InputData):
 
         prediction = model.predict(input_df)[0]
 
-        # Import here to avoid circular issues
-        from src.monitoring.logger import log_prediction
+        # 🔥 Monitoring (logging predictions)
+        from src.logger import log_prediction
         log_prediction(input_dict, float(prediction))
 
         return {
