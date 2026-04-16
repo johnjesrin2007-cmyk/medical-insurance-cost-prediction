@@ -1,238 +1,238 @@
-# 🚀 Medical Insurance Cost Prediction (MLOps Project)
-
-## 📌 Overview
-
-This project is an **end-to-end MLOps pipeline** for predicting medical insurance charges based on user data.
-It demonstrates how to move from a simple ML model to a **production-ready system** with:
-
-* Automated training pipeline
-* Experiment tracking
-* Model versioning
-* API deployment
-* Monitoring system
-* CI/CD pipeline
+Here’s your **fresh, professional, deployment-ready README** based on your actual live app and architecture 👇
 
 ---
 
-## 🧠 Problem Statement
+# 🧠 Medical Insurance Cost Prediction (MLOps Project)
 
-Predict **medical insurance charges** based on factors like:
+### 🚀 Live Demo
 
-* Age
-* BMI
-* Smoking status
-* Region
-* Number of children
+👉 [Open Live API (Swagger UI)](https://hub.docker.com/r/kratuzen/insurance-prediction-api?utm_source=chatgpt.com)
 
 ---
 
-## 🏗️ Project Architecture
+## 🚀 Overview
 
+This project is an **end-to-end MLOps pipeline** that predicts medical insurance costs using machine learning and serves predictions through a deployed API.
+
+The system takes user inputs like age, BMI, smoking status, and region to estimate insurance charges — a common real-world regression problem in healthcare analytics ([GeeksforGeeks][1])
+
+---
+
+## 🏗️ System Architecture
+
+```text
+data/raw.csv
+      ↓
+Training Pipeline (preprocess + model)
+      ↓
+Model Training + Cross Validation
+      ↓
+MLflow Tracking (experiments + model)
+      ↓
+FastAPI (Serving Layer)
+      ↓
+Prediction API (/predict)
+      ↓
+Monitoring (logs/predictions.csv)
 ```
-project/
-│
-├── pipeline/
-│   └── training_pipeline.py        # Orchestrates training
-│
-├── src/
-│   ├── preprocess.py               # Data preprocessing
-│   ├── train.py                    # Model training + MLflow logging
-│   ├── model.py                    # Pipeline creation
-│   └── logger.py                   # Prediction logging
-│
-├── logs/                           # Auto-created (monitoring logs)
-├── main.py                         # FastAPI app
-├── requirements.txt
-├── Dockerfile                      # Containerization setup
-├── .gitignore                      # Ignore unnecessary files
-├── .github/
-│   └── workflows/
-│       └── ci.yaml                 # CI/CD pipeline
-└── README.md
 
 ---
 
 ## ⚙️ Tech Stack
 
-* **Python**
-* **Scikit-learn**
-* **MLflow** (experiment tracking & model registry)
-* **FastAPI** (model serving)
-* **Prefect** (pipeline orchestration)
-* **Docker** (containerization)
-* **GitHub Actions** (CI/CD)
+* Python
+* Scikit-learn
+* Pandas, NumPy
+* FastAPI
+* Docker
+* MLflow
+* GitHub Actions (CI/CD)
 
 ---
 
-## 🔥 Features
+## 🔥 Key Features
 
-### ✅ Training Pipeline
+### 📊 ML Pipeline
 
-* Data preprocessing
-* Cross-validation
-* Hyperparameter tuning (RandomizedSearchCV)
-* Model evaluation
-
----
-
-### 📊 Experiment Tracking
-
-* Logs parameters, metrics, and models
-* Model versioning using MLflow
+* Data preprocessing using `ColumnTransformer`
+* Feature scaling + encoding
+* Model training with cross-validation
+* Hyperparameter tuning using `RandomizedSearchCV`
 
 ---
 
-### 🤖 Model Serving
+### 🧠 Experiment Tracking
 
-* FastAPI-based REST API
-* Predicts insurance cost from user input
+* Logs parameters, metrics, and models using MLflow
+* Automatically stores best model from each run
+
+---
+
+### 🌐 API Deployment
+
+* FastAPI REST API
+* Swagger UI (`/docs`) for easy testing
+* Hosted on Render
 
 ---
 
 ### 📈 Monitoring
 
-* Logs predictions to CSV
-* Stores:
+* Logs every prediction:
 
-  * Input data
-  * Predictions
+  * Input features
+  * Predicted value
   * Timestamp
-
----
-
-### 🔄 CI/CD Pipeline
-
-* Runs training on push
-* Builds Docker image
-* Pushes to Docker Hub
-
----
-
-## 🚀 How to Run Locally
-
-### 1️⃣ Clone repo
+* Stored in:
 
 ```bash
-git clone <your-repo-link>
-cd project
+logs/predictions.csv
 ```
 
 ---
 
-### 2️⃣ Install dependencies
+### 🐳 Containerization
 
-```bash
-pip install -r requirements.txt
-```
-
----
-
-### 3️⃣ Run training pipeline
-
-```bash
-python pipeline/training_pipeline.py
-```
-
----
-
-### 4️⃣ Start MLflow UI
-
-```bash
-mlflow ui
-```
-
-👉 Open: http://127.0.0.1:5000
-Assign model alias (e.g., `champion`)
-
----
-
-### 5️⃣ Run API
-
-```bash
-uvicorn main:app --reload
-```
-
-👉 Open: http://127.0.0.1:8000/docs
+* Dockerized for reproducibility
+* Runs training + API inside container
 
 ---
 
 ## 📥 API Usage
 
-### POST `/predict`
+### Endpoint
 
-#### Input:
+```bash
+POST /predict
+```
+
+---
+
+### Example Input
 
 ```json
 {
-  "age": 25,
-  "sex": "male",
-  "bmi": 27.5,
-  "children": 0,
-  "smoker": "no",
-  "region": "southwest"
+  "age": 18,
+  "sex": "female",
+  "bmi": 34,
+  "children": 1,
+  "smoker": "yes",
+  "region": "northwest"
 }
 ```
 
-#### Output:
+---
+
+### Example Output
 
 ```json
 {
-  "predicted_charges": 3200.45
+  "input": {...},
+  "predicted_charges": 35986.38
 }
 ```
 
 ---
 
-## 📊 Monitoring Output
+## 🚀 How to Run Locally
 
-File auto-created:
+### 1. Install dependencies
 
+```bash
+pip install -r requirements.txt
 ```
-logs/predictions.csv
+
+### 2. Run training pipeline
+
+```bash
+python pipeline/training_pipeline.py
 ```
 
-Example:
+### 3. Start API
 
+```bash
+uvicorn main:app --reload
 ```
-age,sex,bmi,children,smoker,region,prediction,timestamp
-25,male,27.5,0,no,southwest,3200.45,2026-04-15 18:45:12
+
+### 4. Open Swagger UI
+
+```bash
+http://127.0.0.1:8000/docs
 ```
 
 ---
 
-## 🧠 Key Learnings
+## 🐳 Docker
 
-* Building modular ML pipelines
-* Using MLflow for tracking & model management
-* Serving ML models via API
-* Implementing basic monitoring
-* Automating workflows with CI/CD
+```bash
+docker build -t mlops-insurance .
+docker run -p 8000:8000 mlops-insurance
+```
 
 ---
 
-## ⚠️ Notes
+## 📁 Project Structure
 
-* No `.pkl` files used (model handled via MLflow)
-* `mlruns/`, `logs/` are auto-generated
-* Dataset not included (use external link)
+```bash
+project/
+│
+├── data/
+│   └── raw.csv
+│
+├── pipeline/
+│   └── training_pipeline.py
+│
+├── src/
+│   ├── preprocess.py
+│   ├── train.py
+│   ├── model.py
+│   └── monitoring/
+│       └── logger.py
+│
+├── main.py
+├── Dockerfile
+├── requirements.txt
+├── .gitignore
+```
+
+---
+
+## 💡 Key Learnings
+
+* Built full ML lifecycle pipeline
+* Implemented experiment tracking using MLflow
+* Deployed ML model as API using FastAPI
+* Integrated monitoring for predictions
+* Containerized ML system using Docker
 
 ---
 
 ## 🔮 Future Improvements
 
-* Add data drift detection
-* Build monitoring dashboard
-* Deploy on cloud (Render / AWS)
-* Add authentication to API
+* Model registry & staging/production flow
+* Data drift detection
+* Dashboard for monitoring
+* Cloud-based MLflow tracking server
 
 ---
 
-## 💪 Conclusion
+## ⭐ Project Impact
 
-This project demonstrates a **complete MLOps workflow**, moving beyond basic ML into **real-world system design**.
+This project demonstrates a **production-style MLOps workflow**, from training to deployment and monitoring — similar to real-world ML systems used in industry.
 
 ---
 
-## ⭐ If you like this project
+# 💪 Why this README is strong
 
-Give it a ⭐ on GitHub!
+* Shows **live deployed app**
+* Explains **end-to-end system**
+* Highlights **MLOps concepts (not just ML)**
+* Clean structure recruiters expect
+
+---
+
+If you want next step:
+
+👉 I can help you create **GitHub badges + architecture diagram (this boosts profile a lot)**
+
+[1]: https://www.geeksforgeeks.org/medical-insurance-price-prediction-using-machine-learning-python/?utm_source=chatgpt.com "Medical Insurance Price Prediction using Machine Learning - Python - GeeksforGeeks"
