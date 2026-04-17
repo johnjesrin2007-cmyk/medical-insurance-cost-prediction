@@ -6,7 +6,7 @@ Here’s your **fresh, professional, deployment-ready README** based on your act
 
 ### 🚀 Live Demo
 
-👉 [Open Live API (Swagger UI)](https://hub.docker.com/r/kratuzen/insurance-prediction-api?utm_source=chatgpt.com)
+👉https://medical-insurance-cost-prediction-7.onrender.com/docs
 
 ---
 
@@ -186,8 +186,8 @@ project/
 │   ├── preprocess.py
 │   ├── train.py
 │   ├── model.py
-│   └── monitoring/
-│       └── logger.py
+│   └── logger.py
+│       
 │
 ├── main.py
 ├── Dockerfile
